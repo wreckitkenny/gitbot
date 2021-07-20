@@ -16,7 +16,7 @@ class Webhook(BaseHTTPRequestHandler):
         resource = json.loads(post_data)['event_data']['resources'][0]['resource_url']
         if eventType == "PUSH_ARTIFACT": 
             logging.info("-"*60)
-            logging.info("[*] GitBot is proceeding...")
+            logging.info("GitBot is proceeding...")
             gitbot_function.gitBot(resource, configPath, binPath)
             
 def run(server_class=HTTPServer, handler_class=Webhook, addr="localhost", port=8000):
