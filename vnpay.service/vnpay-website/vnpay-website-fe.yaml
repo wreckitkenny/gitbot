@@ -1,0 +1,84 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: hub.vnpaytest.vn/library/web-frontend
+  tag: m-0.1.1-0120c4e6       # REQUIRED
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+########## App settings ##########
+app:
+  kind: Deployment
+  replicas: 3
+  # command: ["/bin/bash"]
+  # args: ["-c", "echo \" Hello from $(hostname)\" > index.html; python -m SimpleHTTPServer 8888"]
+  port: 3000
+  annotations: {}
+  podAnnotations: {}
+    ## In order to get prometheus to scrape pods
+    # prometheus.io/scrape: "true"
+    # prometheus.io/path: /metrics
+    # prometheus.io/port: "8080"
+    ## In order to fluentbit parse logs
+    # fluentbit.io/parser: apache
+  healthcheck:
+    liveness: {}
+    #   periodSeconds: 3
+    #   timeoutSeconds: 10
+    #   httpGet:
+    #     path: "/"
+    #     port: http
+    readiness: {}
+    startup: {}
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+########## Networking ##########
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+    ## In order to get prometheus to scrape service
+    # prometheus.io/scrape: "true"
+    # prometheus.io/path: /metrics
+    # prometheus.io/port: "8080"
+
+autoscaling:
+  enabled: false
+  min: 3
+  max: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+# ingress:
+#   enabled: true
+#   annotations: {}
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   hosts:
+#   - host: demoweb.vnpaytest.vn
+#     paths: [/]
+#   tls: []
+  # - secretName: example.com-tls
+  #   hosts:
+  #   - example.com
+
+########## Observation ##########
+serviceMonitor:
+  enabled: true
+  additionalLabels: {}
+  interval: 30s
+  honorLabels: false
+  relabellings: {}
