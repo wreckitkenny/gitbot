@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.2] | 2021-07-21
+### Added
+- Add merge request policy
+- Add optional comment for Cloud version
+### Changed
+- Change Regex pattern to match oldTag
+### Fixed
+
 ## [0.1.1] | 2021-07-21
 ### Added
 ### Changed
