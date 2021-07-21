@@ -40,7 +40,8 @@ def changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName):
     if branchName == 'release':
         assignees = getApprovers(gl, cdProject)
         logging.info('Gitbot is creating a merge request for new branch [{}]'.format(branchName))
-        cdProject.mergerequests.create({'source_branch':branchName, 'target_branch':'master', 'title':'Merge new version to production', 'assignee_ids':assignees})
+        mr = cdProject.mergerequests.create({'source_branch':branchName, 'target_branch':'master', 'title':'Merge new version to production', 'assignee_ids':assignees})
+        mr.approval_rules.create({"name": "Production MR Policy", "approvals_required": 2, "rule_type": "regular","user_ids": assignees})
 
     # Complete
     logging.info('Gitbot has finished changing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
@@ -92,10 +93,10 @@ def getOldTag(cdProject, repoName):
                     ### Code on Cloud
                     # if 'tag' in i:
                         # i = re.sub(r'[\n\t ]', '', i)
-                        #Oldest i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)?([a-z0-9]+)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        #Older i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        # i = re.search('(?<=:)(v)?((\d\.){2}\d-|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        # return i
+                        ## Oldest i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)?([a-z0-9]+)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                        ## Older i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                        # i = re.search('(?<=:)(m-)?(v)?((\d\.){2}\d-|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                        # return i.group(0)
 
 def logConfig(parser):
     logging.basicConfig(filename=parser.get('LOG', 'LOG_PATH')+'/'+parser.get('LOG', 'LOG_FILENAME'), 
