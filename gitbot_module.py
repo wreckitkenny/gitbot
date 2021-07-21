@@ -48,15 +48,15 @@ def changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName):
 def checkEnvironment(gl, parser, pushedTag):
     env = ''
     id_dev = parser.get('WORKLOAD', 'DEV_DEPLOYMENT')
-    id_test = parser.get('WORKLOAD', 'TEST_DEPLOYMENT')
+    id_staging = parser.get('WORKLOAD', 'STAGING_DEPLOYMENT')
     id_prod = parser.get('WORKLOAD', 'PROD_DEPLOYMENT')
     if pushedTag.split('-')[0] == 'd' and checkProjectID(gl, id_dev) == 1: 
         env = 'dev'
         cdProject = gl.projects.get(id_dev)
-    elif pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_test) == 1:
-        env = 'test'
-        cdProject = gl.projects.get(id_test)
-    elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_prod) == 1:
+    elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_staging) == 1:
+        env = 'staging'
+        cdProject = gl.projects.get(id_staging)
+    elif pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_prod) == 1:
         env = 'release'
         cdProject = gl.projects.get(id_prod)
     return(env,cdProject)
