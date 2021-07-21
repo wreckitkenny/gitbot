@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.1] | 2021-07-21
+### Added
+### Changed
+- Change conditions to match checkEnvironment
+### Fixed
+
 ## [0.1.0] | 2021-07-20
 ### Added
 - Release the first version
