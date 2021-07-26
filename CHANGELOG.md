@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.3] | 2021-07-26
+### Added
+### Changed
+### Fixed
+- Fixed error not creating release branch
+
 ## [0.1.2] | 2021-07-21
 ### Added
 - Add merge request policy
