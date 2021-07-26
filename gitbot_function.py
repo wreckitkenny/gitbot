@@ -23,10 +23,11 @@ def gitBot(resource, configPath, binPath):
         location = searchFile(cdProject, repoName)
         branch_list = [branch.name for branch in cdProject.branches.list()]
 
-    if env == 'release' and env in branch_list: 
-        logging.warning('Branch [{}] is existing on Production.'.format(env))
-        cdProject.branches.delete(env)
-        logging.info('Gitbot has removed old [{}] branch'.format(env))
+    if env == 'release':
+        if env in branch_list: 
+            logging.warning('Branch [{}] is existing on Production.'.format(env))
+            cdProject.branches.delete(env)
+            logging.info('Gitbot has removed old [{}] branch'.format(env))
         logging.info('Gitbot is creating a new [{}] branch'.format(env))
         cdProject.branches.create({'branch': env, 'ref': 'master'})
         branchName = env
