@@ -15,8 +15,7 @@ class Webhook(BaseHTTPRequestHandler):
         #print(post_data)
         eventType = json.loads(post_data)['type']
         resource = json.loads(post_data)['event_data']['resources'][0]['resource_url']
-        if eventType == "pushImage":
-        #if eventType == "PUSH_ARTIFACT": 
+        if eventType == "PUSH_ARTIFACT": 
             logging.info("-"*60)
             logging.info("GitBot is proceeding...")
             gitbot_function.gitBot(resource, configPath, binPath)
