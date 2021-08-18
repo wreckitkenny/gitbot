@@ -38,7 +38,7 @@ def changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName):
 
     # Create merge request
     if branchName == 'release':
-        assignees = getApprovers(gl, cdProject)
+        assignees = getApprovers(gl, cdProject, cdFolder)
         logging.info('Gitbot is creating a merge request for new branch [{}]'.format(branchName))
         mr = cdProject.mergerequests.create({'source_branch':branchName, 'target_branch':'master', 'title':'Merge new version to production', 'assignee_ids':assignees})
         mr.approval_rules.create({"name": "Production MR Policy", "approvals_required": 2, "rule_type": "regular","user_ids": assignees})
@@ -70,14 +70,21 @@ def checkProjectID(gl, id):
         return 0
     return 1
 
-def getApprovers(gl, cdProject):
-    ownerPath = [file['path'] for file in cdProject.repository_tree(recursive=True, all=True) if file['name'] == 'OWNERS']
-    if len(ownerPath) != 0: 
-        owners = cdProject.files.raw(file_path=ownerPath[0].strip(), ref='master')
-        assignees = [o for o in owners.decode().strip().split('\n')]
-        assignee_id = [gl.users.list(username=assignee)[0].id for assignee in assignees]
-        return assignee_id
-    else: logging.error("OWNERS file is not available.")
+def getApprovers(gl, cdProject, cdFolder):
+    # ownerPath = [file['path'] for file in cdProject.repository_tree(recursive=True, all=True) if file['name'] == 'OWNERS']
+    # if len(ownerPath) != 0: 
+    try:
+        owners = cdProject.files.raw(file_path=cdFolder+"/OWNERS", ref='master')
+        try:
+            assignees = [o for o in owners.decode().strip().split('\n')]
+            assignee_id = [gl.users.list(username=assignee)[0].id for assignee in assignees]
+            return assignee_id
+        except IndexError:
+            logging.error("OWNERS file is empty")
+            return []
+    except gitlab.exceptions.GitlabGetError:
+        logging.error("OWNERS file is not found.")
+        return []
     # if len(owners.decode().strip().split('\n')) == 0: logging.error('There is no OWNERS file or the file is empty')
     # else: assignees = [o for o in owners.decode().strip().split('\n')]
     
