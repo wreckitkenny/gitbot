@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.4] | 2021-08-18
+### Added
+### Changed
+- Changed logic to get approvers
+### Fixed
+- Fixed the error when there are more than one OWNERS file
+
 ## [0.1.3] | 2021-07-26
 ### Added
 ### Changed
