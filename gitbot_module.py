@@ -54,12 +54,16 @@ def checkEnvironment(gl, parser, pushedTag):
     if pushedTag.split('-')[0] == 'd' and checkProjectID(gl, id_dev) == 1: 
         env = 'dev'
         cdProject = gl.projects.get(id_dev)
-    elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_staging) == 1:
+    # elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_staging) == 1:
+    elif pushedTag.split('-')[0] == 't' and checkProjectID(gl, id_staging) == 1:
         env = 'staging'
         cdProject = gl.projects.get(id_staging)
     elif pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_prod) == 1:
         env = 'release'
         cdProject = gl.projects.get(id_prod)
+    else:
+        logging.error('Tag {} is wrong format.'.format(pushedTag))
+        env = cdProject = ''
     return(env,cdProject)
 
 def checkProjectID(gl, id):
