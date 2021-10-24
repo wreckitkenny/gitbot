@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.5] | 2021-10-25
+### Added
+- Add condition to check wrong image tag
+### Changed
+- Changed logic to check Test Environment's image tag
+### Fixed
+
 ## [0.1.4] | 2021-08-18
 ### Added
 ### Changed
