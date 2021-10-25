@@ -47,7 +47,7 @@ def changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName):
     logging.info('Gitbot has finished changing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
 
 def checkEnvironment(gl, parser, pushedTag):
-    env = ''
+    env = cdProject = ''
     id_dev = parser.get('WORKLOAD', 'DEV_DEPLOYMENT')
     id_staging = parser.get('WORKLOAD', 'STAGING_DEPLOYMENT')
     id_prod = parser.get('WORKLOAD', 'PROD_DEPLOYMENT')
@@ -63,7 +63,6 @@ def checkEnvironment(gl, parser, pushedTag):
         cdProject = gl.projects.get(id_prod)
     else:
         logging.error('Tag {} is wrong format.'.format(pushedTag))
-        env = cdProject = ''
     return(env,cdProject)
 
 def checkProjectID(gl, id):
