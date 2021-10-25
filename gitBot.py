@@ -12,10 +12,10 @@ class Webhook(BaseHTTPRequestHandler):
         self._set_response()
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
+        #print(post_data)
         eventType = json.loads(post_data)['type']
         resource = json.loads(post_data)['event_data']['resources'][0]['resource_url']
-        if eventType == "PUSH_ARTIFACT": 
-        # if eventType == "pushImage": 
+        if eventType == "PUSH_ARTIFACT":  
             logging.info("-"*100)
             logging.info("GitBot is proceeding...")
             gitbot_function.gitBot(resource, configPath, binPath)
