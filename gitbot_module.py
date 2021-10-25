@@ -62,7 +62,7 @@ def checkEnvironment(gl, parser, pushedTag):
         env = 'release'
         cdProject = gl.projects.get(id_prod)
     else:
-        logging.error('Tag {} is wrong format.'.format(pushedTag))
+        logging.error('Tag {} - Wrong format.'.format(pushedTag))
     return(env,cdProject)
 
 def checkProjectID(gl, id):
