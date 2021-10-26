@@ -17,7 +17,6 @@ class Webhook(BaseHTTPRequestHandler):
         resource = json.loads(post_data)['event_data']['resources'][0]['resource_url']
         if eventType == "PUSH_ARTIFACT":  
             logging.info("-"*100)
-            logging.info("GitBot is proceeding...")
             gitbot_function.gitBot(resource, configPath, binPath)
             
 def run(server_class=HTTPServer, handler_class=Webhook, addr="localhost", port=8000):
@@ -30,11 +29,13 @@ def run(server_class=HTTPServer, handler_class=Webhook, addr="localhost", port=8
 if __name__ == "__main__":
     # Gitbot help menu
     parser = argparse.ArgumentParser(description="Webhook endpoint for Gitlab-ci")
-    parser.add_argument('-i', metavar='IP_ADDRESS', nargs=1, type=str, help='Listening IP Address')
-    parser.add_argument('-p', metavar='PORT', nargs=1, type=int, help='Listening Port')
+    # parser.add_argument('-i', metavar='IP_ADDRESS', nargs=1, type=str, help='Listening IP Address')
+    # parser.add_argument('-p', metavar='PORT', nargs=1, type=int, help='Listening Port')
     parser.add_argument('-c', metavar='CONFIG_FILE', nargs=1, type=str, help='Config File')
     args = parser.parse_args()
-    if len(sys.argv) > 1: configPath = args.c[0]; binPath = '/'.join(args.c[0].split('/')[:-1])
+    if len(sys.argv) > 1: 
+        configPath = args.c[0]
+        binPath = '/'.join(args.c[0].split('/')[:-1])
     else: parser.print_help()
 
     # Config file module

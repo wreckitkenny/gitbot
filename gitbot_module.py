@@ -55,27 +55,24 @@ def checkEnvironment(gl, parser, pushedTag):
         env = 'dev'
         cdProject = gl.projects.get(id_dev)
     # elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_staging) == 1:
-    elif pushedTag.split('-')[0] == 't' and checkProjectID(gl, id_staging) == 1:
+    if pushedTag.split('-')[0] == 't' and checkProjectID(gl, id_staging) == 1:
         env = 'staging'
         cdProject = gl.projects.get(id_staging)
-    elif pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_prod) == 1:
+    if pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_prod) == 1:
         env = 'release'
         cdProject = gl.projects.get(id_prod)
-    else:
-        logging.error('Tag {} - Wrong format.'.format(pushedTag))
     return(env,cdProject)
 
 def checkProjectID(gl, id):
     try:
-        cdProject = gl.projects.get(id)
+        gl.projects.get(id)
     except gitlab.exceptions.GitlabGetError:
         logging.error("ProjectID {} is not existing.".format(id))
         return 0
     return 1
 
+
 def getApprovers(gl, cdProject, cdFolder):
-    # ownerPath = [file['path'] for file in cdProject.repository_tree(recursive=True, all=True) if file['name'] == 'OWNERS']
-    # if len(ownerPath) != 0: 
     try:
         owners = cdProject.files.raw(file_path=cdFolder+"/OWNERS", ref='master')
         try:
@@ -88,8 +85,6 @@ def getApprovers(gl, cdProject, cdFolder):
     except gitlab.exceptions.GitlabGetError:
         logging.error("OWNERS file is not found.")
         return []
-    # if len(owners.decode().strip().split('\n')) == 0: logging.error('There is no OWNERS file or the file is empty')
-    # else: assignees = [o for o in owners.decode().strip().split('\n')]
     
 
 def getOldTag(cdProject, repoName):
@@ -107,12 +102,16 @@ def getOldTag(cdProject, repoName):
                         #Older i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
                         i = re.search('(?<=:)(m-)?(v)?((\d\.){2}\d-|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
                         return i.group(0)
+    logging.error("Repository [{}] is not found".format(repoName))
+    return ''
+    
 
 def logConfig(parser):
     logging.basicConfig(filename=parser.get('LOG', 'LOG_PATH')+'/'+parser.get('LOG', 'LOG_FILENAME'), 
                         level=logging.INFO,
                         format='%(asctime)s | %(levelname)s | %(message)s',
                         datefmt='%d/%m/%Y | %I:%M:%S')
+
 
 def searchFile(cdProject, repoName):
     fileList = []

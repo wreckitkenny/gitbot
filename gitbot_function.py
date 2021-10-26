@@ -17,6 +17,8 @@ def gitBot(resource, configPath, binPath):
     branchName = 'master'
     repoName = resource.split(':')[0]
     newTag = resource.split(':')[1]
+
+    logging.info("Gitbot is proceeding new image [{}]".format(resource))
     env, cdProject = checkEnvironment(gl, parser, newTag)
     if env != '':
         oldTag = getOldTag(cdProject, repoName)
@@ -31,9 +33,9 @@ def gitBot(resource, configPath, binPath):
             logging.info('Gitbot is creating a new [{}] branch'.format(env))
             cdProject.branches.create({'branch': env, 'ref': 'master'})
             branchName = env
-    
-        logging.info('GitBot is comparing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
-        if (lambda x,y: (x>y)-(x<y))(oldTag,newTag) == 0: 
-            logging.info("==> No tag changed!!!")
-    
-        changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName)
+
+        if oldTag != '':
+            logging.info('GitBot is comparing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
+            if (lambda x,y: (x>y)-(x<y))(oldTag,newTag) == 0: logging.info("==> No tag changed!!!")
+            changeTag(gl, cdProject, oldTag, newTag, binPath, location, branchName)
+    else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
