@@ -88,22 +88,26 @@ def getApprovers(gl, cdProject, cdFolder):
     
 
 def getOldTag(cdProject, repoName):
-    files = cdProject.repository_tree(recursive=True, all=True)
-    for file in files:
-        if file['type'] == 'blob':
-            file_content = cdProject.files.raw(file_path=file['path'], ref='master')
-            if repoName in str(file_content):
-                for i in file_content.decode().split('\n'):
-                    #if 'image' in i: return i.split(':')[-1].strip()
-                    ### Code on Cloud
-                    if 'tag' in i:
-                        i = re.sub(r'[\n\t ]', '', i)
-                        #Oldest i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)?([a-z0-9]+)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        #Older i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        i = re.search('(?<=:)(m-)?(v)?((\d\.){2}\d-|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
-                        return i.group(0)
-    logging.error("Repository [{}] is not found".format(repoName))
-    return ''
+    try:
+        files = cdProject.repository_tree(recursive=True, all=True)
+        for file in files:
+            if file['type'] == 'blob':
+                file_content = cdProject.files.raw(file_path=file['path'], ref='master')
+                if repoName in str(file_content):
+                    for i in file_content.decode().split('\n'):
+                        #if 'image' in i: return i.split(':')[-1].strip()
+                        ### Code on Cloud
+                        if 'tag' in i:
+                            i = re.sub(r'[\n\t ]', '', i)
+                            #Oldest i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)?([a-z0-9]+)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                            #Older i = re.search('(?<=:)(v)?(((\d(\.\d)+)-)|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                            i = re.search('(?<=:)(m-)?(v)?((\d\.){2}\d-|[a-z]-)?([a-z0-9]+)',re.sub(r'[\n\t ]', '', i))
+                            return i.group(0)
+        logging.error("Repository [{}] is not found".format(repoName))
+        return ''
+    except gitlab.exceptions.GitlabGetError:
+        logging.error("CD repository is empty or not initialized yet")
+    
     
 
 def logConfig(parser):
