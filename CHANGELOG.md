@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Integrate to Slack
+
+## [1.0.0] | 2021-10-27 - Official version
+### Added/Removed
+### Changed
+- Changed processing filenames
+### Fixed
 
 ## [0.1.6] | 2021-10-26
 ### Added/Removed
