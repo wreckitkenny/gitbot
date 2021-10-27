@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import gitbot_function, gitbot_module, json, configparser, logging
+import function, module, json, configparser, logging
 import argparse, sys
 
 class Webhook(BaseHTTPRequestHandler):
@@ -17,7 +17,7 @@ class Webhook(BaseHTTPRequestHandler):
         resource = json.loads(post_data)['event_data']['resources'][0]['resource_url']
         if eventType == "PUSH_ARTIFACT":  
             logging.info("-"*100)
-            gitbot_function.gitBot(resource, configPath, binPath)
+            function.gitBot(resource, configPath, binPath)
             
 def run(server_class=HTTPServer, handler_class=Webhook, addr="localhost", port=8000):
     server_address = (addr, port)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     parser.read(configPath)
 
     # Logging module
-    gitbot_module.logConfig(parser)
+    module.logConfig(parser)
 
     # Variable definition                
     endpointAddress = parser.get('ENDPOINT', 'ENDPOINT_ADDRESS')

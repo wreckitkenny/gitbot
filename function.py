@@ -1,5 +1,5 @@
 import gitlab, configparser, logging, os
-from gitbot_module import *
+from module import *
 
 def gitBot(resource, configPath, binPath):
     # Config file module

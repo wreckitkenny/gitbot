@@ -17,7 +17,7 @@ ExecStart=/usr/bin/python3 /opt/gitBot/gitBot.py -c /opt/gitBot/gitBot.conf
 RestartSec=5s
 Restart=on-success
 [Install]
-WantedBy=multi-user.targe
+WantedBy=multi-user.target
 EOF
 
 # Reload daemon
