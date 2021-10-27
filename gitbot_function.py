@@ -32,7 +32,7 @@ def gitBot(resource, configPath, binPath):
                 logging.info('Gitbot has removed old [{}] branch'.format(newTag))
             logging.info('Gitbot is creating a new [{}] branch'.format(newTag))
             cdProject.branches.create({'branch': newTag, 'ref': 'master'})
-            branchName = env
+            branchName = newTag
 
         if oldTag != '':
             logging.info('GitBot is comparing old tag [{}] to new tag [{}].'.format(oldTag, newTag))

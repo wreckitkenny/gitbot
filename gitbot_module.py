@@ -23,7 +23,7 @@ def changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branch
 
     # Commit changes
     data = {
-        'branch': newTag,
+        'branch': branchName,
         'commit_message': 'Change tag',
         'actions': [
             {
@@ -33,14 +33,14 @@ def changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branch
             }
         ]
     }
-    logging.info('Gitbot is committing new change to branch [{}].'.format(newTag))
+    logging.info('Gitbot is committing new change to branch [{}].'.format(branchName))
     cdProject.commits.create(data)
 
     # Create merge request
-    if branchName == 'release':
+    if branchName == newTag:
         assignees = getApprovers(gl, cdProject, cdFolder)
-        logging.info('Gitbot is creating a merge request for new branch [{}]'.format(newTag))
-        mr = cdProject.mergerequests.create({'source_branch':newTag, 'target_branch':'master', 'title':'Vnpaybot has released {}'.format(resource), 'assignee_ids':assignees})
+        logging.info('Gitbot is creating a merge request for new branch [{}]'.format(branchName))
+        mr = cdProject.mergerequests.create({'source_branch':branchName, 'target_branch':'master', 'title':'Vnpaybot has released {}'.format(resource), 'assignee_ids':assignees})
         mr.approval_rules.create({"name": "Production MR Policy", "approvals_required": 2, "rule_type": "regular","user_ids": assignees})
 
     # Complete

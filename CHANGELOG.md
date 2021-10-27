@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Added logging when imageTag wrong (format)
 ### Changed
 ### Fixed
+- Minor fixes
 
 ## [0.1.5] | 2021-10-25
 ### Added/Removed
