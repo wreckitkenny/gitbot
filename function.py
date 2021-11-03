@@ -1,5 +1,6 @@
 import gitlab, configparser, logging, os
 from module import *
+from slack import slack
 
 def gitBot(resource, configPath, binPath):
     # Config file module
@@ -37,5 +38,10 @@ def gitBot(resource, configPath, binPath):
         if oldTag != '':
             logging.info('GitBot is comparing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
             if (lambda x,y: (x>y)-(x<y))(oldTag,newTag) == 0: logging.info("==> No tag changed!!!")
-            else: changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branchName)
+            else: 
+                changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branchName)
+                slack.slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
+                            channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
+                            app=parser.get('SLACK', 'SLACK_APP'), 
+                            msg='Gitbot has finished changing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
     else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
