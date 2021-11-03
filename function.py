@@ -18,6 +18,7 @@ def gitBot(resource, configPath, binPath):
     branchName = 'master'
     repoName = resource.split(':')[0]
     newTag = resource.split(':')[1]
+    cluster = parser.get('GENERAL', 'CLUSTER')
 
     logging.info("Gitbot is proceeding new image [{}]".format(resource))
     env, cdProject = checkEnvironment(gl, parser, newTag)
@@ -26,7 +27,7 @@ def gitBot(resource, configPath, binPath):
         location = searchFile(cdProject, repoName)
         branch_list = [branch.name for branch in cdProject.branches.list()]
 
-        if env == 'release':
+        if env == 'PROD':
             if newTag in branch_list: 
                 logging.warning('Branch [{}] is existing.'.format(newTag))
                 cdProject.branches.delete(newTag)
@@ -43,5 +44,5 @@ def gitBot(resource, configPath, binPath):
                 slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
                             channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
                             app=parser.get('SLACK', 'SLACK_APP'), 
-                            msg='Image [{}] is updated from old tag [{}] to new tag [{}].'.format(repoName, oldTag, newTag))
+                            msg='[{}-{}-Workload] - Service {} - is updated from old tag [{}] to new tag [{}].'.format(cluster, env, repoName.split('/')[:-1], oldTag, newTag))
     else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
