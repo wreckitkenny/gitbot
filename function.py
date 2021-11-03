@@ -1,6 +1,6 @@
 import gitlab, configparser, logging, os
 from module import *
-from slack import slack
+from slack import *
 
 def gitBot(resource, configPath, binPath):
     # Config file module
@@ -40,7 +40,7 @@ def gitBot(resource, configPath, binPath):
             if (lambda x,y: (x>y)-(x<y))(oldTag,newTag) == 0: logging.info("==> No tag changed!!!")
             else: 
                 changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branchName)
-                slack.slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
+                slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
                             channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
                             app=parser.get('SLACK', 'SLACK_APP'), 
                             msg='Gitbot has finished changing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
