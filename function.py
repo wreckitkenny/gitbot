@@ -44,5 +44,5 @@ def gitBot(resource, configPath, binPath):
                 slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
                             channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
                             app=parser.get('SLACK', 'SLACK_APP'), 
-                            msg='[{}-{}-Workload] - Service {} - is updated from old tag [{}] to new tag [{}].'.format(cluster, env, repoName.split('/')[-1], oldTag, newTag))
+                            msg='[{}-{}-WORKLOAD] - Service {} - is updated from old tag [{}] to new tag [{}].'.format(cluster, env, repoName.split('/')[-1], oldTag, newTag))
     else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
