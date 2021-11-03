@@ -43,5 +43,5 @@ def gitBot(resource, configPath, binPath):
                 slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
                             channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
                             app=parser.get('SLACK', 'SLACK_APP'), 
-                            msg='Gitbot has finished changing old tag [{}] to new tag [{}].'.format(oldTag, newTag))
+                            msg='Image [{}] is updated from old tag [{}] to new tag [{}].'.format(repoName, oldTag, newTag))
     else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
