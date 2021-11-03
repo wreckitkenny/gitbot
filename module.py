@@ -52,14 +52,14 @@ def checkEnvironment(gl, parser, pushedTag):
     id_staging = parser.get('WORKLOAD', 'STAGING_DEPLOYMENT')
     id_prod = parser.get('WORKLOAD', 'PROD_DEPLOYMENT')
     if pushedTag.split('-')[0] == 'd' and checkProjectID(gl, id_dev) == 1: 
-        env = 'dev'
+        env = 'DEV'
         cdProject = gl.projects.get(id_dev)
     # elif re.match('(v)?((\d\.){2}\d)', pushedTag.split('-')[0]) != None and checkProjectID(gl, id_staging) == 1:
     if pushedTag.split('-')[0] == 't' and checkProjectID(gl, id_staging) == 1:
-        env = 'staging'
+        env = 'TEST'
         cdProject = gl.projects.get(id_staging)
     if pushedTag.split('-')[0] == 'm' and checkProjectID(gl, id_prod) == 1:
-        env = 'release'
+        env = 'PROD'
         cdProject = gl.projects.get(id_prod)
     return(env,cdProject)
 
