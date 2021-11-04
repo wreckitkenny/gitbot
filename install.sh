@@ -13,7 +13,7 @@ Description=gitBot Endpoint
 After=syslog.target
 [Service]
 LimitNOFILE=65536
-ExecStart=/usr/bin/python3 /opt/gitBot/gitBot.py -c /opt/gitBot/gitBot.conf 
+ExecStart=/usr/bin/python3 /opt/gitbot/gitbot.py -c /opt/gitbot/gitbot.conf 
 RestartSec=5s
 Restart=on-success
 [Install]

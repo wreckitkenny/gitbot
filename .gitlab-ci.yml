@@ -1,0 +1,10 @@
+include:
+  - project: 'cicd-template/ci-template'
+    ref: master
+    file: '/gitlab-ci.gitbot.yaml'
+
+variables:
+  IMAGE_NAME: gitbot
+  PROJECT_NAME: library
+  LOCAL_REGISTRY: registry.vnpaytest.vn
+  REGISTRY_USERNAME: thanhdt

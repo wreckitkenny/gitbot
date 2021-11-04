@@ -2,9 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Integrate to Slack
 
-## [1.0.1] | 2021-11-04
+## [1.0.2] | 2021-11-04
+### Added/Removed
+- Dockerized Gitbot
+### Changed
+### Fixed
+
+## [1.0.1] | 2021-11-03
 ### Added/Removed
 - Added Slack to inform when finishing changing tag
 - Added colored text to Slack msg
