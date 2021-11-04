@@ -52,8 +52,7 @@ def gitBot(resource, configPath, binPath):
             if (lambda x,y: (x>y)-(x<y))(oldTag,newTag) == 0: logging.info("==> No tag changed!!!")
             else: 
                 changeTag(gl, resource, cdProject, oldTag, newTag, binPath, location, branchName)
-                slack(token=parser.get('SLACK', 'SLACK_TOKEN'), 
+                slack(oldTag, newTag, cluster, env, repoName, token=parser.get('SLACK', 'SLACK_TOKEN'), 
                             channel=parser.get('SLACK', 'SLACK_CHANNEL'), 
-                            app=parser.get('SLACK', 'SLACK_APP'), 
-                            msg='[{OKBLUE}{BOLD}{}-{}-WORKLOAD{ENDC}] Service [{OKBLUE}{BOLD}{}{}{ENDC}] is updated from old tag [{OKBLUE}{BOLD}{}{}{ENDC}] to new tag [{OKBLUE}{BOLD}{}{}{ENDC}].'.format(cluster, env, repoName.split('/')[-1], oldTag, newTag))
+                            app=parser.get('SLACK', 'SLACK_APP'))
     else: logging.error("==> The image [{}] is rejected to deploy.".format(resource))
