@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.0.3] | 2021-11-06
+### Added/Removed
+- Added Proxy setting option used for Slack or outgoing traffic
+### Changed
+- Changed module directory structure
+### Fixed
+
 ## [1.0.2] | 2021-11-04
 ### Added/Removed
 - Dockerized Gitbot
