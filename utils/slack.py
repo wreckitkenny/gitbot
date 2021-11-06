@@ -1,21 +1,24 @@
 import os
 from slack_sdk import WebClient
 
-proxy = 'http://10.20.23.210:9090'
-os.environ['http_proxy'] = proxy 
-os.environ['HTTP_PROXY'] = proxy
-os.environ['https_proxy'] = proxy
-os.environ['HTTPS_PROXY'] = proxy
+def enableProxy(proxy):
+    os.environ['http_proxy'] = proxy 
+    os.environ['HTTP_PROXY'] = proxy
+    os.environ['https_proxy'] = proxy
+    os.environ['HTTPS_PROXY'] = proxy
 
-def slack(oldTag, newTag, cluster, env, repoName, token, channel, app):
-    # slack_token = os.environ["SLACK_BOT_TOKEN"]
+def slack(oldTag, newTag, cluster, env, repoName, proxy, proxyInfo, token, channel, app):
     slack_token = token
     client = WebClient(token=slack_token)
+    
+    # Check Proxy enabled
+    if proxy == "true": enableProxy(proxyInfo)
 
     response = client.chat_postMessage(
         channel=channel,
         attachments=[
         {
+            "fallback": "There is a fallback message.",
             "color": "#36a64f",
             "author_name": "VNPAY-GITBOT",
             "author_link": "https://github.com/wreckitkenny/gitBot",
